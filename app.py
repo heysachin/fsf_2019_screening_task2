@@ -18,8 +18,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
 
         self.filename = ''
-        self.mdiArea1 = QmdiArea1Area()
-        self.mdiArea2 = QmdiArea1Area()
+        self.mdiArea1 = QMdiArea()
+        self.mdiArea2 = QMdiArea()
 
         self.widget1 = QWidget(self)
         self.layout1 = QHBoxLayout(self.widget1)
@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
         self.toolbar = NavigationToolbar(self.canvas, self)
 
         self.rows = []
-        self.win = QmdiArea1SubWindow()
+        self.win = QMdiSubWindow()
         self.MiddleWidget = QWidget()
         self.layout2 = QVBoxLayout(self.MiddleWidget)
         self.layout2.addWidget(self.toolbar)
@@ -76,10 +76,10 @@ class MainWindow(QMainWindow):
         self.win.setWidget(self.MiddleWidget)
 
         self.MenuBar = self.menuBar()
-        self.FileMenu = self.MenuBar.addMenu("self.FileMenu")
+        self.FileMenu = self.MenuBar.addMenu("File")
         self.FileMenu.addAction("Load")
-        self.EditMenu = self.MenuBar.addMenu("self.EditMenu")
-        self.EditMenu.addAction("self.EditMenu data")
+        self.EditMenu = self.MenuBar.addMenu("Edit")
+        self.EditMenu.addAction("Edit data")
         self.FileMenu.addAction("Add data")
         self.FileMenu.addAction("Save")
         self.FileMenu.addAction("Save as PNG")
@@ -166,6 +166,10 @@ class MainWindow(QMainWindow):
             self.writeCsv(self.filename)
         elif q.text()=="Save as PNG":
             self.take_screenshot()
+    
+    def take_screenshot(self):
+        self.p = QPixmap.grabWindow(self.win.winId())
+        self.p.save('screen.png', 'png')
 
 def main():
     app = QApplication(sys.argv)
